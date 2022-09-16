@@ -1,0 +1,80 @@
+---
+ - hosts: dbhosts
+   user: root
+   tasks:
+        - name: dbvg volume group creation
+          lvg:
+               vg: oradb
+               pvs: /dev/sdc
+
+        - name: db00 lvm creation
+          lvol:
+               vg: oradb
+               lv: db00
+               size: 10G
+
+        - name: db01 lvm creation
+          lvol:
+               vg: oradb
+               lv: db01
+               size: 5G
+
+        - name: db02 lvm creation
+          lvol:
+               vg: oradb
+               lv: db02
+               size: 5G
+
+        - name: db03 lvm creation
+          lvol:
+               vg: oradb
+               lv: db03
+               size: 5G
+
+        - name: create file system for db00
+          filesystem:
+                fstype: xfs
+                dev: /dev/oradb/db00
+
+        - name: create file system for db01
+          filesystem:
+                fstype: xfs
+                dev: /dev/oradb/db01
+
+        - name: create file system for db02
+          filesystem:
+                fstype: xfs
+                dev: /dev/oradb/db02
+
+        - name: create file system for db03
+          filesystem:
+                fstype: xfs
+                dev: /dev/oradb/db03
+
+        - name: mount db00 logical volumes
+          mount:
+                name: /db00
+                src: /dev/oradb/db00
+                fstype: xfs
+                state: mounted
+
+        - name: mount db01 logical volumes
+          mount:
+                name: /db01
+                src: /dev/oradb/db01
+                fstype: xfs
+                state: mounted
+
+        - name: mount db02 logical volumes
+          mount:
+                name: /db02
+                src: /dev/oradb/db02
+                fstype: xfs
+                state: mounted
+
+        - name: mount db03 logical volumes
+          mount:
+                name: /db03
+                src: /dev/oradb/db03
+                fstype: xfs
+                state: mounted
